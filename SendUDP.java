@@ -1,7 +1,10 @@
 import java.net.*;  // for DatagramSocket, DatagramPacket, and InetAddress
 import java.io.*;   // for IOException
+import java.util.Scanner;
+import java.util.Random;
 
-public class SendUDP {
+
+public class SendUDP implements RequestBinConst{
 
   public static void main(String args[]) throws Exception {
 
@@ -13,8 +16,31 @@ public class SendUDP {
       InetAddress destAddr = InetAddress.getByName(args[0]);  // Destination address
       int destPort = Integer.parseInt(args[1]);               // Destination port
       
-      Request Request = new Request(1234567890987654L, "Alice Adams",
-				 (short) 777, 90007, true, true, false);
+      //ask user for input
+      Scanner scanner = new Scanner(System.in);
+
+      // Prompt the user for their name
+      System.out.print("Please enter the op code: " + "\n" +
+           "- - subtraction" + "\n" +
+           "+ - addition" + "\n" +
+           "& - and" + "\n" +
+           "| - or" + "\n" +
+           "* - multiplication" + "\n" +
+           "/ - division" + "\n");
+      String operation = scanner.nextLine();
+ 
+
+      System.out.print("Please enter operand 1: ");
+      int leftOperand = scanner.nextInt();
+      System.out.print("Please enter operand 2: ");
+      int rightOperand = scanner.nextInt();
+
+      Random random = new Random();
+      int randomNumber = random.nextInt(100) + 1;
+      short requestID = (short) randomNumber;
+
+
+      Request request = new Request(operation, leftOperand, rightOperand, requestID);
       
       DatagramSocket sock = new DatagramSocket(); // UDP socket for sending
       
@@ -25,8 +51,11 @@ public class SendUDP {
 				  new RequestEncoderBin());
       
 
-      byte[] codedRequest = encoder.encode(Request); // Encode Request
+      byte[] codedRequest = encoder.encode(request); // Encode Request
+
       
+
+
       DatagramPacket message = new DatagramPacket(codedRequest, codedRequest.length, 
 						  destAddr, destPort);
       sock.send(message);
