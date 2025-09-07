@@ -13,9 +13,18 @@ public class RequestDecoderBin implements RequestDecoder, RequestBinConst {
     this.encoding = encoding;
   }
 
-  public Request decode(InputStream wire) throws IOException {
+  public Request decode(InputStream wire) throws IOException { //possibly return a map<Request, byte[]>
       boolean single, rich, female;
+  
+    // Convert ByteArrayInputStream to byte array
+        byte[] convertedBytes = wire.readAllBytes();
+
+        // Print for verification
+        for (byte b : convertedBytes) {
+            System.out.print(b + " "); //make it on same line
+        }  
     DataInputStream src = new DataInputStream(wire);
+    byte length        = src.readByte(); 
     long  ID            = src.readLong();
     short streetnumber  = src.readShort();
     int   zipcode       = src.readInt();

@@ -16,25 +16,20 @@ public class RequestEncoderBin implements RequestEncoder, RequestBinConst {
 
     ByteArrayOutputStream buf = new ByteArrayOutputStream();
     DataOutputStream out = new DataOutputStream(buf);
-    out.writeLong(Request.ID);
-    // Will deal with the lasname at the end
-    out.writeShort(Request.streetNumber);
-    out.writeInt(Request.zipCode);
-    byte flags = 0;
-    if (Request.single)
-	flags = SINGLE_FLAG;
-    if (Request.rich)
-	flags |= RICH_FLAG;
-    if (Request.female)
-	flags |= FEMALE_FLAG;
-    out.writeByte(flags);
 
-    byte[] encodedLastname = Request.lastName.getBytes(encoding);
-    if (encodedLastname.length > MAX_LASTNAME_LEN)
-      throw new IOException("Request lastname exceeds encoded length limit");
-    out.writeByte(encodedLastname.length); // provides length of lastname
-    out.write(encodedLastname);
+    
+    out.writeByte(0); // Message length placeholder
+    out.writeByte(Request.opCode);
+    out.writeInt(Request.leftOperand);
+    out.writeInt(Request.rightOperand);
+    out.writeShort(Request.requestID);
+    out.writeByte(Request.opNameLength);
+    byte[] encodedOperation = Request.opName.getBytes(encoding);
+    out.write(encodedOperation);
     out.flush();
-    return buf.toByteArray();
+    byte[] data = buf.toByteArray();
+    data[0] = (byte) data.length; // Set the length
+    System.out.println(data);
+    return data;
   }
 }
