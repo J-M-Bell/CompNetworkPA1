@@ -1,15 +1,15 @@
 import java.net.Authenticator.RequestorType;
 
-public class Request {
+public class Request implements RequestBinConst{
 
-    public byte totalMessageLength; // Total message length
+    public String operation;
     public byte opCode;        // Op Code
     public int leftOperand;   // Left operand
     public int rightOperand;  // Right operand
     public short requestID;     // Request ID
     public byte opNameLength;  // Length of opName
     public String opName;     // Operation name
-    
+
     public long ID;            // Item identification number
     public String lastName;    // Lastname
     public short streetNumber; // street #
@@ -18,6 +18,16 @@ public class Request {
     public boolean rich;       // Rich ?
     public boolean female;     // Female ?
     
+
+  public Request(String operation, int leftOperand, int rightOperand,
+         short requestID) {
+      this.opCode            = opCodes.get(operation);
+      this.leftOperand       = leftOperand;
+      this.rightOperand      = rightOperand;
+      this.requestID         = requestID;
+      this.opName            = opNames.get(operation);
+      this.opNameLength      = (byte)opName.length();    
+  }
 
   public Request(long ID, String lastname, short streetnumber, 
 		int zipcode, boolean single, boolean rich, boolean female)  {
@@ -28,28 +38,5 @@ public class Request {
       this.single       = single;
       this.rich         = rich;
       this.female       = female;
-  }
-
-  public String toString() {
-    final String EOLN = java.lang.System.getProperty("line.separator");
-    String value = "Request # = " + ID + EOLN +
-                   "Lastname = " + lastName + EOLN +
-                   "Street#  = " + streetNumber + EOLN +
-                   "Zip Code = " + zipCode + EOLN;
-    if (single)
-	value += "Single" + EOLN;
-    else
-	value += "Married" + EOLN;
-
-    if (rich)                                                            
-	value += "Rich" + EOLN;
-    else
-	value += "Poor" + EOLN;     
-    
-    if (female)
-	value += "Female" + EOLN;
-    else
-	value += "Male" + EOLN;
-    return value;
   }
 }
