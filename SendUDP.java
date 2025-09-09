@@ -8,9 +8,9 @@ public class SendUDP implements RequestBinConst{
 
   public static void main(String args[]) throws Exception {
 
-      if (args.length != 2 && args.length != 3)  // Test for correct # of args        
-	  throw new IllegalArgumentException("Parameter(s): <Destination>" +
-					     " <Port> [<encoding]");
+    if (args.length != 2 && args.length != 3)  // Test for correct # of args        
+	    throw new IllegalArgumentException("Parameter(s): <Destination>" +
+					                                " <Port> [<encoding]");
       
       
       InetAddress destAddr = InetAddress.getByName(args[0]);  // Destination address
@@ -29,12 +29,13 @@ public class SendUDP implements RequestBinConst{
            "/ - division" + "\n");
       String operation = scanner.nextLine();
  
-
+      // get operands
       System.out.print("Please enter operand 1: ");
       int leftOperand = scanner.nextInt();
       System.out.print("Please enter operand 2: ");
       int rightOperand = scanner.nextInt();
 
+      //create random requestID
       Random random = new Random();
       int randomNumber = random.nextInt(100) + 1;
       short requestID = (short) randomNumber;
@@ -46,9 +47,9 @@ public class SendUDP implements RequestBinConst{
       
       
       // Use the encoding scheme given on the command line (args[2])
-      RequestEncoder encoder = (args.length == 3 ?
-				  new RequestEncoderBin(args[2]) :
-				  new RequestEncoderBin());
+      Encoder encoder = (args.length == 3 ?
+				  new ClientRequestEncoderBin(args[2]) :
+				  new ClientRequestEncoderBin());
       
 
       byte[] codedRequest = encoder.encode(request); // Encode Request
