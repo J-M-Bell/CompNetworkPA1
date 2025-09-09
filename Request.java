@@ -21,22 +21,12 @@ public class Request implements RequestBinConst{
 
   public Request(String operation, int leftOperand, int rightOperand,
          short requestID) {
-      this.opCode            = opCodes.get(operation);
+      this.opCode            = (byte) validOperations.indexOf(operation);
       this.leftOperand       = leftOperand;
       this.rightOperand      = rightOperand;
       this.requestID         = requestID;
-      this.opName            = opNames.get(operation);
+      this.opName            = validOpNames[this.opCode];
       this.opNameLength      = (byte)opName.length();    
   }
 
-  public Request(long ID, String lastname, short streetnumber, 
-		int zipcode, boolean single, boolean rich, boolean female)  {
-      this.ID           = ID;
-      this.lastName     = lastname;
-      this.streetNumber = streetnumber;
-      this.zipCode      = zipcode;
-      this.single       = single;
-      this.rich         = rich;
-      this.female       = female;
-  }
 }
