@@ -1,26 +1,26 @@
-import java.io.*;   // for Input/OutputStream
-import java.net.*;  // for Socket and ServerSocket
+// import java.io.*;   // for Input/OutputStream
+// import java.net.*;  // for Socket and ServerSocket
 
-public class RecvTCP {
+// public class RecvTCP {
 
-  public static void main(String args[]) throws Exception {
+//   public static void main(String args[]) throws Exception {
 
-    if (args.length != 1)  // Test for correct # of args
-      throw new IllegalArgumentException("Parameter(s): <Port>");
+//     if (args.length != 1)  // Test for correct # of args
+//       throw new IllegalArgumentException("Parameter(s): <Port>");
 
-    int port = Integer.parseInt(args[0]);   // Receiving Port
+//     int port = Integer.parseInt(args[0]);   // Receiving Port
 	
-    ServerSocket servSock = new ServerSocket(port);
-    Socket clntSock = servSock.accept();
+//     ServerSocket servSock = new ServerSocket(port);
+//     Socket clntSock = servSock.accept();
 
-    // Receive binary-encoded Request
-    RequestDecoder decoder = new RequestDecoderBin();
-    Request receivedRequest = decoder.decode(clntSock.getInputStream());
+//     // Receive binary-encoded Request
+//     RequestDecoder decoder = new RequestDecoderBin();
+//     Request receivedRequest = decoder.decode(clntSock.getInputStream());
 
-    System.out.println("Received Binary-Encoded Request");
-    System.out.println(receivedRequest);
+//     System.out.println("Received Binary-Encoded Request");
+//     System.out.println(receivedRequest);
 
-    clntSock.close();
-    servSock.close();
-  }
-}
+//     clntSock.close();
+//     servSock.close();
+//   }
+// }
