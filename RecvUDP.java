@@ -15,10 +15,10 @@ public class RecvUDP {
       sock.receive(packet);
       
       // Receive binary-encoded Request                              
-      // RequestDecoder decoder = new RequestDecoderBin();
-      RequestDecoder decoder = (args.length == 2 ?   // Which encoding              
-				  new RequestDecoderBin(args[1]) :
-				  new RequestDecoderBin() );
+      // RequestDecoder decoder = new ClientRequestDecoderBin();
+      Decoder decoder = (args.length == 2 ?   // Which encoding              
+				                new ClientRequestDecoderBin(args[1]) :
+				                new ClientRequestDecoderBin() );
 
 
       Request receivedRequest = decoder.decode(packet);
