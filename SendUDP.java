@@ -48,8 +48,8 @@ public class SendUDP implements RequestBinConst{
       
       // Use the encoding scheme given on the command line (args[2])
       Encoder encoder = (args.length == 3 ?
-				  new ClientRequestEncoderBin(args[2]) :
-				  new ClientRequestEncoderBin());
+				  new EncoderBin(args[2]) :
+				  new EncoderBin());
       
 
       byte[] codedRequest = encoder.encode(request); // Encode Request
@@ -60,7 +60,16 @@ public class SendUDP implements RequestBinConst{
       DatagramPacket message = new DatagramPacket(codedRequest, codedRequest.length, 
 						  destAddr, destPort);
       sock.send(message);
+
+      DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+
+      sock.receive(packet);
+
+      // Decoder decoder = (args.length == 3 ?   // Which encoding              
+      //                   new ServerResponseDecoderBin(args[2]) :
+      //                   new ServerResponseDecoderBin() );
       
+      // Response receivedResponse = decoder.decode(packet);
       sock.close();
   }
 }
