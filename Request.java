@@ -26,7 +26,17 @@ public class Request implements RequestBinConst{
       this.rightOperand      = rightOperand;
       this.requestID         = requestID;
       this.opName            = validOpNames[this.opCode];
-      this.opNameLength      = (byte)opName.length();    
+      this.opNameLength      = (byte)opName.length();
+      this.operation         = operation;    
+  }
+
+  /*
+   * A simple method for displaying the request 
+   * made by the client.
+   */
+  public String toString() {
+      return "Request# " + requestID + "\n" + 
+              "Request: " + leftOperand + " " + operation + " " + rightOperand;
   }
 
 }
