@@ -50,7 +50,7 @@ public class EncoderBin implements Encoder, RequestBinConst {
     out.writeInt(Request.rightOperand);
     out.writeShort(Request.requestID);
     out.writeByte(Request.opNameLength);
-    byte[] encodedOperation = Request.opName.getBytes(encoding);
+    byte[] encodedOperation = Request.opName.getBytes("UTF-16");
     out.write(encodedOperation);
     out.flush();
     byte[] data = buf.toByteArray();
