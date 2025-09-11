@@ -14,18 +14,17 @@ public class RecvUDP {
   public static void main(String[] args) throws Exception {
 
       if (args.length != 1 && args.length != 2)  // Test for correct # of args        
-	  throw new IllegalArgumentException("Parameter(s): <Port> [<encoding>]");
+	      throw new IllegalArgumentException("Parameter(s): <Port> [<encoding>]");
       boolean closeSocket = false;
-
+      int port = Integer.parseInt(args[0]);   // Receiving Port
+      DatagramSocket sock = new DatagramSocket(port);  // UDP socket
+      
+      //loop to keep server running until "q" is sent from client
       while (!closeSocket) {
-        int port = Integer.parseInt(args[0]);   // Receiving Port
-        
-        DatagramSocket sock = new DatagramSocket(port);  // UDP socket      
+
         DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
         sock.receive(packet);
-        //create code block for receiving packet of length 1 to close socket and exit program
-        
-
+        //code block for receiving packet of length 1 to close socket and exit program
         if (packet.getLength() == 1) {
           closeSocket = true;
           sock.close();
