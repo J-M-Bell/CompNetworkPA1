@@ -1,5 +1,14 @@
 import java.net.Authenticator.RequestorType;
 
+/**
+ * A class that implements a reqest
+ * object that handles the client's
+ * request and calculates the result
+ * of the equation.
+ * 
+ * @author JM Bell
+ * @version 9/10/25
+ */
 public class Request implements RequestBinConst{
 
     public String operation;
@@ -9,16 +18,18 @@ public class Request implements RequestBinConst{
     public short requestID;     // Request ID
     public byte opNameLength;  // Length of opName
     public String opName;     // Operation name
-
-    public long ID;            // Item identification number
-    public String lastName;    // Lastname
-    public short streetNumber; // street #
-    public int zipCode;        // zip code
-    public boolean single;     // Single ?
-    public boolean rich;       // Rich ?
-    public boolean female;     // Female ?
     
 
+  /**
+   * A method that creates a object that represents
+   * the client's request
+   *
+   * 
+   * @param operation String - the sign of the operation for the request 
+   * @param leftOperand int - the left operand of the equation
+   * @param rightOperand int - the right operand of the equation
+   * @param requestID short - the ID of the client's request 
+   */
   public Request(String operation, int leftOperand, int rightOperand,
          short requestID) {
       this.opCode            = (byte) validOperations.indexOf(operation);
@@ -30,9 +41,11 @@ public class Request implements RequestBinConst{
       this.operation         = operation;    
   }
 
-  /*
+  /**
    * A simple method for displaying the request 
    * made by the client.
+   *
+   * @return String - request information
    */
   public String toString() {
       return "Request# " + requestID + "\n" + 
