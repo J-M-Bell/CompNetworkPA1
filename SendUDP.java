@@ -3,7 +3,14 @@ import java.io.*;   // for IOException
 import java.util.Scanner;
 import java.util.Random;
 
-
+/**
+ * A class for creating the UDP client
+ * for sending the request and
+ * receiving the server's response.
+ * 
+ * @author JM Bell
+ * @version 9/10/25
+ */
 public class SendUDP implements RequestBinConst{
 
   public static void main(String args[]) throws Exception {
@@ -12,64 +19,86 @@ public class SendUDP implements RequestBinConst{
 	    throw new IllegalArgumentException("Parameter(s): <Destination>" +
 					                                " <Port> [<encoding]");
       
-      
+      boolean closeSocket = false; 
       InetAddress destAddr = InetAddress.getByName(args[0]);  // Destination address
       int destPort = Integer.parseInt(args[1]);               // Destination port
+      DatagramSocket sock = new DatagramSocket(destPort); // UDP socket
+      while (!closeSocket) {
+        
+
+        //ask user for input
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt the user for their name
+        System.out.print("Please enter the op code: " + "\n" +
+            "- - subtraction" + "\n" +
+            "+ - addition" + "\n" +
+            "& - and" + "\n" +
+            "| - or" + "\n" +
+            "* - multiplication" + "\n" +
+            "/ - division" + "\n" +
+            "q - quit\n");
+        String operation = scanner.nextLine();
+        
+        if (operation.equals("q")) {
+          DatagramPacket message = new DatagramPacket(new byte[1], 1, 
+                destAddr, destPort);
+          sock.send(message);
+
+          closeSocket = true;
+          sock.close();
+          scanner.close();
+          System.out.println("Exiting program.");
+          break;
+        }
+        // get operands
+        System.out.print("Please enter operand 1: ");
+        int leftOperand = scanner.nextInt();
+        System.out.print("Please enter operand 2: ");
+        int rightOperand = scanner.nextInt();
+
+        //create random requestID
+        Random random = new Random();
+        int randomNumber = random.nextInt(100) + 1;
+        short requestID = (short) randomNumber;
+
+
+        Request request = new Request(operation, leftOperand, rightOperand, requestID);
+        
+        
+        
+        
+        // Use the encoding scheme given on the command line (args[2])
+        Encoder encoder = (args.length == 3 ?
+            new EncoderBin(args[2]) :
+            new EncoderBin());
+        
+
+        byte[] codedRequest = encoder.encode(request); // Encode Request
+
+        
+
+
+        DatagramPacket message = new DatagramPacket(codedRequest, codedRequest.length, 
+                destAddr, destPort);
+        sock.send(message);
+        long sentTime = System.currentTimeMillis();
+
+        DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+        sock.receive(packet);
+        long receivedTime = System.currentTimeMillis();
+        long rtt = receivedTime - sentTime;
+        
+        System.out.print("Received response (Byte Form): ");
+        Decoder decoder = (args.length == 3 ?   // Which encoding              
+                          new DecoderBin(args[2]) :
+                          new DecoderBin() );
+        
+        Response receivedResponse = (Response) decoder.decode(packet, false);
+        System.out.println("Received response:\n" + receivedResponse.toString()); //display response to client
+        System.out.println("RTT: " + rtt + " milliseconds\n");
+      }
       
-      //ask user for input
-      Scanner scanner = new Scanner(System.in);
-
-      // Prompt the user for their name
-      System.out.print("Please enter the op code: " + "\n" +
-           "- - subtraction" + "\n" +
-           "+ - addition" + "\n" +
-           "& - and" + "\n" +
-           "| - or" + "\n" +
-           "* - multiplication" + "\n" +
-           "/ - division" + "\n");
-      String operation = scanner.nextLine();
- 
-      // get operands
-      System.out.print("Please enter operand 1: ");
-      int leftOperand = scanner.nextInt();
-      System.out.print("Please enter operand 2: ");
-      int rightOperand = scanner.nextInt();
-
-      //create random requestID
-      Random random = new Random();
-      int randomNumber = random.nextInt(100) + 1;
-      short requestID = (short) randomNumber;
-
-
-      Request request = new Request(operation, leftOperand, rightOperand, requestID);
       
-      DatagramSocket sock = new DatagramSocket(); // UDP socket for sending
-      
-      
-      // Use the encoding scheme given on the command line (args[2])
-      Encoder encoder = (args.length == 3 ?
-				  new EncoderBin(args[2]) :
-				  new EncoderBin());
-      
-
-      byte[] codedRequest = encoder.encode(request); // Encode Request
-
-      
-
-
-      DatagramPacket message = new DatagramPacket(codedRequest, codedRequest.length, 
-						  destAddr, destPort);
-      sock.send(message);
-
-      DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
-
-      sock.receive(packet);
-
-      // Decoder decoder = (args.length == 3 ?   // Which encoding              
-      //                   new ServerResponseDecoderBin(args[2]) :
-      //                   new ServerResponseDecoderBin() );
-      
-      // Response receivedResponse = decoder.decode(packet);
-      sock.close();
   }
 }
