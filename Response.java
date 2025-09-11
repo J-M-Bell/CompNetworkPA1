@@ -1,3 +1,11 @@
+/**
+ * A class that implements a response
+ * object that handles the server's
+ * response to the client's request.
+ * 
+ * @author JM Bell
+ * @version 9/10/25
+ */
 public class Response implements RequestBinConst {
     public short requestID;     // Request ID
     public String operation;    // Operation
@@ -6,16 +14,48 @@ public class Response implements RequestBinConst {
     public int result;        // Result of operation
     public byte errorCode; // error code
 
+    /**
+     * A constructor for the server's response when
+	 * the result has not been calculated.
+     *
+     * 
+     * @param requestID short - ID of client's request
+	 * @param operation String - operation of the client's request 
+     * @param leftOperand int - the left operand of the equation
+     * @param rightOperand int - the right operand of the equation 
+     */
     public Response(short requestID, String operation, int leftOperand,
              int rightOperand) {
-        this.errorCode         = 127;
-        this.requestID         = requestID;
-        this.operation         = operation;
-        this.leftOperand       = leftOperand;
-        this.rightOperand      = rightOperand;
-        this.result            = calculateResult();
+        this.errorCode = 127;
+        this.requestID = requestID;
+        this.operation = operation;
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
+        this.result = calculateResult();
     }
 
+    /**
+     * A constructor for the server's response when
+	 * the result is known.
+     *
+     * 
+     * @param requestID short - ID of client's request
+	 * @param errorCode byte - error code for the operation  
+     * @param result int - the result of the client's requested operation 
+     */
+    public Response(short requestID, byte errorCode, int result) {
+        this.requestID = requestID;
+        this.errorCode = errorCode;
+        this.result = result;
+    }
+
+	/**
+     * A constructor for the server's response when
+	 * the result has not been calculated.
+     *
+     * 
+     * @return int - result of client's request 
+     */
     public int calculateResult() {
         switch (operation) {
             case "+": // ADD
@@ -48,18 +88,19 @@ public class Response implements RequestBinConst {
                 }
                 break;
             default:
-                errorCode = 2; // Invalid operation code error
                 result = 0;
         }
         return result;
     }
 
-    /*
+    /**
      * A simple method for displaying the server's
      * response to the client.
+	 * 
+	 * @return String - response information
      */
     public String toString() {
-        String printString = "Request #" + requestID + " " + result + " ";
+        String printString = "Request #" + requestID + "\nResult: " + result + "\n";
         if (errorCode == 0) {
             printString += "Ok";
         }
