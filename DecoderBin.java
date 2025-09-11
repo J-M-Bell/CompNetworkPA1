@@ -55,7 +55,7 @@ public class DecoderBin implements Decoder, RequestBinConst {
       byte opNameLength = src.readByte();
       byte[] opNameBytes = new byte[opNameLength];
       src.readFully(opNameBytes);
-      String opName = new String(opNameBytes, encoding); 
+      String opName = new String(opNameBytes, "UTF-16"); 
 
       //create and return Request object
       Request request = new Request(validOperations.get(opCode), leftOperand, rightOperand, requestID);
