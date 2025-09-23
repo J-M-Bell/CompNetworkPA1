@@ -44,10 +44,21 @@ public class DecoderBin implements Decoder, RequestBinConst {
    */
   public Object decode(InputStream wire, boolean requestOrResponseFlag) throws IOException { 
   
+
+
+    
     DataInputStream src = new DataInputStream(wire);
     if (requestOrResponseFlag) {
       //read frames from input stream
       byte length = src.readByte();
+      BufferedInputStream buf = new BufferedInputStream(wire);
+      byte[] data = new byte[length];
+      buf.read(data);
+      for (byte datum : data) {
+          // Process the byte (e.g., cast to char and print)
+          System.out.print(datum);
+      }
+      System.out.println("done");
       byte opCode = src.readByte();
       int  leftOperand = src.readInt();
       int  rightOperand = src.readInt();
