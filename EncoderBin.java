@@ -40,6 +40,10 @@ public class EncoderBin implements Encoder, RequestBinConst {
    */
   public byte[] encode(Request Request) throws Exception {
 
+    if (Request.operation.equals("q")) {
+      byte[] quitByte = Request.operation.getBytes();
+      return quitByte;
+    }
     ByteArrayOutputStream buf = new ByteArrayOutputStream();
     DataOutputStream out = new DataOutputStream(buf);
 
@@ -56,11 +60,6 @@ public class EncoderBin implements Encoder, RequestBinConst {
     byte[] data = buf.toByteArray();
     data[0] = (byte) data.length; // Set the length
 		
-		//print request byte by byte
-    for (byte b : data) {
-      System.out.print(String.format("%02X", b));
-    }
-    System.out.println("\n");
     return data;
   }
 
@@ -85,11 +84,6 @@ public class EncoderBin implements Encoder, RequestBinConst {
     byte[] data = buf.toByteArray();
     data[0] = (byte) data.length; // Set the length
 
-		//print response byte by byte
-    for (byte b : data) {
-      System.out.print(String.format("%02X", b));
-    }
-    System.out.println("\n");
     return data;
   }
 }
