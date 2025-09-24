@@ -44,21 +44,13 @@ public class DecoderBin implements Decoder, RequestBinConst {
    */
   public Object decode(InputStream wire, boolean requestOrResponseFlag) throws IOException { 
   
-
-
-    
     DataInputStream src = new DataInputStream(wire);
     if (requestOrResponseFlag) {
       //read frames from input stream
-      byte length = src.readByte();
-      BufferedInputStream buf = new BufferedInputStream(wire);
-      byte[] data = new byte[length];
-      buf.read(data);
-      for (byte datum : data) {
-          // Process the byte (e.g., cast to char and print)
-          System.out.print(datum);
+      byte firstByte = src.readByte();
+      if (firstByte == "q".getBytes()[0]) {
+        return new Request("q");
       }
-      System.out.println("done");
       byte opCode = src.readByte();
       int  leftOperand = src.readInt();
       int  rightOperand = src.readInt();
@@ -94,19 +86,7 @@ public class DecoderBin implements Decoder, RequestBinConst {
    * @return byte[] - client's request or server's response encoded into bytes
    */
   public Object decode(DatagramPacket p, boolean requestOrResponseFlag) throws IOException { 
-    
-		//gets and save the length of the message
-    byte[] requestByteArray = p.getData();
-    int messageLength = requestByteArray[0];
-		
-
-		//display message one byte at a time in hex format
-    for (int i = 0; i < messageLength; i++) {
-      System.out.print(String.format("%02X", requestByteArray[i]));
-    }
-    System.out.println("\n");
-    
-
+     
 		//create and return byte[] input stream
     ByteArrayInputStream payload =
       new ByteArrayInputStream(p.getData(), p.getOffset(), p.getLength());
