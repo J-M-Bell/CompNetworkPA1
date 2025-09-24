@@ -110,4 +110,16 @@ public class Response implements RequestBinConst {
 
         return printString;
     }
+
+    public void displayResponseBytes() {
+        String responseString = " " + result + errorCode + requestID;
+        byte[] responseByteArray = responseString.getBytes();
+        responseByteArray[0] = (byte) responseByteArray.length;
+
+        //display message one byte at a time in hex format
+        for (int i = 0; i < responseByteArray.length; i++) {
+            System.out.print(String.format("%02X", responseByteArray[i]));
+        }
+        System.out.println("\n");
+    }
 }
