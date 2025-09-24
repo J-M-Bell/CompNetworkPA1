@@ -12,16 +12,9 @@ public class RecvTCP {
     
       ServerSocket servSock = new ServerSocket(port);
       Socket clntSock = servSock.accept();
+      boolean closeSocket = false;
 
-      //code block for receiving packet of length 1 to close socket and exit program
-      // if (packet.getLength() == 1) {
-      //   closeSocket = true;
-      //   sock.close();
-      //   System.out.println("Exiting program.");
-      //   break;
-      // }
-
-      System.out.print("Received request (Byte Form): ");
+      while (!closeSocket) {
       // Receive binary-encoded Request                              
       Decoder decoder = (args.length == 2 ?   // Which encoding              
                         new DecoderBin(args[1]) :
@@ -29,6 +22,18 @@ public class RecvTCP {
 
 
       Request receivedRequest = (Request) decoder.decode(clntSock.getInputStream(), true); // true for request, false for response
+
+      //Do Check to see if operation is "q" to close socket and exit program
+      if (receivedRequest.operation.equals("q")) {
+        closeSocket = true;
+        clntSock.close();
+        servSock.close();
+        System.out.println("Exiting program.");
+        return;
+      }
+
+      System.out.print("Received request (Byte Form): ");
+      receivedRequest.displayRequestBytes(); //display request byte by byte in hex format
 
       System.out.println("Received request: \n" + receivedRequest.toString()); //display request to client
       
@@ -46,8 +51,6 @@ public class RecvTCP {
 
       OutputStream out = clntSock.getOutputStream(); // Get a handle onto Output Stream
       out.write(codedResponse); // Encode and send
-
-      clntSock.close();
-      servSock.close();
+    }
   }
 }
