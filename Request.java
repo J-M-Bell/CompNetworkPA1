@@ -41,6 +41,9 @@ public class Request implements RequestBinConst{
       this.operation         = operation;    
   }
 
+  public Request(String operation) {
+      this.operation = operation;
+  }
   /**
    * A simple method for displaying the request 
    * made by the client.
@@ -52,4 +55,15 @@ public class Request implements RequestBinConst{
               "Request: " + leftOperand + " " + operation + " " + rightOperand;
   }
 
+  public void displayRequestBytes() {
+      String requestString = " " + opCode + leftOperand + rightOperand + requestID + opNameLength + opName;
+      byte[] requestByteArray = requestString.getBytes();
+      requestByteArray[0] = (byte) requestByteArray.length;
+
+      //display message one byte at a time in hex format
+      for (int i = 0; i < requestByteArray.length; i++) {
+        System.out.print(String.format("%02X", requestByteArray[i]));
+      }
+      System.out.println("\n");
+  }
 }
