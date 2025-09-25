@@ -13,14 +13,13 @@ public class SendTCP {
       InetAddress destAddr = InetAddress.getByName(args[0]);  // Destination address
       int destPort = Integer.parseInt(args[1]);               // Destination port
 
-      Socket sock = new Socket(destAddr, destPort);
 
       
 
 
       boolean closeSocket = false;
       while (!closeSocket) {
-
+        Socket sock = new Socket(destAddr, destPort);
         //ask user for input
         Scanner scanner = new Scanner(System.in);
 
@@ -78,16 +77,22 @@ public class SendTCP {
 
         OutputStream out = sock.getOutputStream(); // Get a handle onto Output Stream
         out.write(codedRequest); // Encode and send
+        long sentTime = System.currentTimeMillis();
+
 
         // Receive binary-encoded Response
         Decoder decoder = (args.length == 3 ?
             new DecoderBin(args[2]) :
             new DecoderBin());
         Response response = (Response) decoder.decode(sock.getInputStream(), false); // true for request, false for response
+        long receivedTime = System.currentTimeMillis();
+        long rtt = receivedTime - sentTime;
         System.out.print("Response received (byte form): ");
         response.displayResponseBytes();
         
         System.out.println("Received response: \n" + response.toString()); //display response to client
+        System.out.println("RTT: " + rtt + " milliseconds\n");
+        sock.close();
     }; // not sure about semicolon here
   }
 }
