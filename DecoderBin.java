@@ -48,6 +48,7 @@ public class DecoderBin implements Decoder, RequestBinConst {
     if (requestOrResponseFlag) {
       //read frames from input stream
       byte firstByte = src.readByte();
+      //check for "q" operation to send quit signal
       if (firstByte == "q".getBytes()[0]) {
         return new Request("q");
       }
