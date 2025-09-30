@@ -24,7 +24,6 @@ public class Request implements RequestBinConst{
    * A method that creates a object that represents
    * the client's request
    *
-   * 
    * @param operation String - the sign of the operation for the request 
    * @param leftOperand int - the left operand of the equation
    * @param rightOperand int - the right operand of the equation
@@ -41,6 +40,13 @@ public class Request implements RequestBinConst{
       this.operation         = operation;    
   }
 
+  /**
+   * A constructor for creating a quit
+   * request when the client wants to
+   * exit the program.
+   * 
+   * @param operation String - the "q" operation to quit the program
+   */
   public Request(String operation) {
       this.operation = operation;
   }
@@ -55,6 +61,10 @@ public class Request implements RequestBinConst{
               "Request: " + leftOperand + " " + operation + " " + rightOperand;
   }
 
+  /**
+   * A method for displaying the request
+   * byte by byte in hex format.
+   */
   public void displayRequestBytes() {
       String requestString = " " + opCode + leftOperand + rightOperand + requestID + opNameLength + opName;
       byte[] requestByteArray = requestString.getBytes();
