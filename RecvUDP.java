@@ -24,6 +24,7 @@ public class RecvUDP {
 
         DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
         sock.receive(packet);
+        
         //code block for receiving packet of length 1 to close socket and exit program
         if (packet.getLength() == 1) {
           closeSocket = true;
