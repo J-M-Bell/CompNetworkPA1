@@ -111,6 +111,10 @@ public class Response implements RequestBinConst {
         return printString;
     }
 
+    /**
+     * A method for displaying the response
+     * byte by byte in hex format.
+     */
     public void displayResponseBytes() {
         String responseString = " " + result + errorCode + requestID;
         byte[] responseByteArray = responseString.getBytes();
