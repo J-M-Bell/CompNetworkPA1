@@ -3,6 +3,14 @@ import java.net.*;  // for Socket
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * A class for creating the TCP client
+ * for sending the request and
+ * receiving the server's response.
+ * 
+ * @author JM Bell
+ * @version 9/10/25
+ */
 public class SendTCP {
 
   public static void main(String args[]) throws Exception {
