@@ -1,6 +1,14 @@
 import java.io.*;   // for Input/OutputStream
 import java.net.*;  // for Socket and ServerSocket
 
+/**
+ * A class for creating the TCP server
+ * for receiving a client's request and
+ * sending a response to the client.
+ * 
+ * @author JM Bell
+ * @version 9/24/25
+ */
 public class RecvTCP {
 
   public static void main(String args[]) throws Exception {
@@ -11,9 +19,9 @@ public class RecvTCP {
       int port = Integer.parseInt(args[0]);   // Receiving Port
     
       ServerSocket servSock = new ServerSocket(port);
-      byte[] buffer = new byte[1024];
       boolean closeSocket = false;
 
+      //loop to keep server running until "q" is sent from client
       while (!closeSocket) {
         Socket clntSock = servSock.accept();
         InputStream in = clntSock.getInputStream();
